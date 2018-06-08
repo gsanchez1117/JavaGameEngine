@@ -31,3 +31,6 @@ as a separate package.
 Documentation will be added to our [Wiki](https://github.com/gsanchez1117/JavaGameEngine/wiki) soon!<br>
 In the meantime, you may run the demo tetris applicaiton included in the repo to get an idea of how things work.<br>
 To run the demo tetris application simply download/clone the repo and then open the project using Eclipse. From there you can open the RunFromHere.java file located within the Tetris package and run the project.
+
+Demo Application installation video:<br>
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/iWX19vh12Eg/0.jpg)](https://youtu.be/iWX19vh12Eg)
