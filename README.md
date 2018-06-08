@@ -11,15 +11,16 @@ as a separate package.
 2) Create a class that extends `JGNode`. This will be the root node and first screen that will be passed into the game engine.
 3) In your `main` method add the following: 
  ```java
-        //Set the root node
-        JGGame.sharedInstance().replaceRootNode(new YOUR_ROOT_NODE_CLASS_CONSTRUCTOR_HERE());
-        
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {    
+                
                 //Create the game window
                 JFrame ex = new JGGameEngineMain();
-                ex.setVisible(true);                
+                ex.setVisible(true);  
+                
+                //Set the root node
+                JGGame.sharedInstance().replaceRootNode(new YOUR_ROOT_NODE_CLASS_CONSTRUCTOR_HERE());
             }
         });
 ```
@@ -28,5 +29,5 @@ as a separate package.
 
 ### Documentation
 Documentation will be added to our [Wiki](https://github.com/gsanchez1117/JavaGameEngine/wiki) soon!<br>
-In the meantime, you may run the demo applicaiton included in the repo to get an idea of how things work.<br>
-To run the demo application simply download/clone the repo and then open the project using Eclipse. From there you can open the Demo.java file and run as normal.
+In the meantime, you may run the demo tetris applicaiton included in the repo to get an idea of how things work.<br>
+To run the demo tetris application simply download/clone the repo and then open the project using Eclipse. From there you can open the RunFromHere.java file located within the Tetris package and run the project.
