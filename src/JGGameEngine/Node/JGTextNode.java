@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
 
 import JGGameEngine.JGGame;
 import JGGameEngine.JGGraphics;
@@ -150,15 +152,34 @@ public class JGTextNode extends JGNode {
 	}
 	
 	public void setFontSize(int size){
-		setFont(new Font(font.getFontName(), font.getStyle(), size));
+		setFont(font.deriveFont((float)size));
 	}
 	
 	public void setFontStyle(int style){
-		setFont(new Font(font.getFontName(), style, font.getSize()));
+		setFont(font.deriveFont(style));
 	}
 	
 	public void setFontName(String name){
 		setFont(new Font(name, font.getStyle(), font.getSize()));
+	}
+	
+	public void setFontFromFile(String fileName){
+		try{
+			File file = new File(fileName);
+			Font f = null;
+			if (file.exists()){
+				f = Font.createFont(Font.TRUETYPE_FONT, file);
+			}else{
+				f = Font.createFont(Font.TRUETYPE_FONT, ClassLoader.getSystemResourceAsStream(fileName));
+			}
+			if (f != null){
+				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+				ge.registerFont(f);
+				setFont(f);
+			}
+		}catch(Exception e){
+			System.out.println("JGTextNode: Error Loading Font");
+		}
 	}
 	
 	public void setText(String Text){

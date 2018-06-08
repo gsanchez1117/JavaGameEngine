@@ -17,6 +17,7 @@ public class JGInputManager implements KeyListener, MouseListener, MouseMotionLi
 	private final BitSet bitset = new BitSet();
 	private JGPoint mousePosition = new JGPoint();
 	private boolean[] mouseButtonState = new boolean[MouseInfo.getNumberOfButtons()];
+	private boolean[] oldMouseButtonState = new boolean[MouseInfo.getNumberOfButtons()];
 	private boolean mouseInputBlocked = false;
 	
 	protected JGInputManager(){}
@@ -38,8 +39,15 @@ public class JGInputManager implements KeyListener, MouseListener, MouseMotionLi
 	
 	public JGPoint getMousePosition(){return mousePosition; }
 	public boolean getMouseButtonState(int button){ return mouseButtonState[button]; } //NOTE: 0 is no button 
+	public boolean getOldMouseButtonState(int button){ return oldMouseButtonState[button]; }
 	public boolean getMouseInputBlocked(){ return mouseInputBlocked; }
 	public void setMouseInputBlocked(boolean blocked){ mouseInputBlocked = blocked; }
+	
+	protected void updateOldMouseButtonState(){
+		for (int i = 0; i < oldMouseButtonState.length; i++){
+			oldMouseButtonState[i] = mouseButtonState[i];
+		}
+	}
 	
 	// -------------------------
 	// Key Listener Events

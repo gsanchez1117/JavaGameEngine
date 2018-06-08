@@ -35,9 +35,6 @@ public class JGNode {
 	protected boolean _transformDirty;
 	private boolean isOpaque;
 	private float opacity;
-	private boolean oldMousePressed;
-	private boolean mouseEntered;
-	private boolean oldMouseEntered;
 	
 	//mouse pressed vars
 	private boolean mousePressed;
@@ -100,8 +97,8 @@ public class JGNode {
 			transformationMatrix = JGUtilities.getTransformFromJGNode(this);
 		}
 		
-		childrenCopy.addAll(children);
 		//update living children
+		childrenCopy.addAll(children);
 		for(JGNode aNode : childrenCopy){
 			
 			if (aNode.isAlive)
@@ -129,9 +126,8 @@ public class JGNode {
 		
 		//calling checkMouseInput last ensures that node
 		//touches are processed in order from front to back
-		if (recievesMouseInput && !JGInputManager.sharedInstance().getMouseInputBlocked())
+		if (recievesMouseInput && !JGInputManager.sharedInstance().getMouseInputBlocked() && isVisible)
 			checkMouseInput();
-		oldMousePressed = JGInputManager.sharedInstance().getMouseButtonState(1);
 	}
 	
 	public void Draw(float dt, Graphics g){
@@ -267,23 +263,18 @@ public class JGNode {
 	// ----------------------------------------------
 	
 	protected void mousePressBegan(JGPoint p){
-		System.out.println("started");
 	}
 	
 	protected void mousePressMoved(JGPoint p){
-		System.out.println("dragged");
 	}
 	
 	protected void mousePressEnded(JGPoint p){
-		System.out.println("ended");
 	}
 	
 	protected void onMouseEnter(){
-		System.out.println("entered");
 	}
 	
 	protected void onMouseExit(){
-		System.out.println("exited");
 	}
 	
 	// ----------------------------------------------
@@ -296,10 +287,10 @@ public class JGNode {
 			pWS = this.parent.convertToWorldSpace(this.getPosition());
 		else
 			pWS = getPosition();
-		
+
 		//adjust for anchor point
 		pWS = pWS.sub(new JGPoint(getContentSize().width * getAnchorPoint().x, getContentSize().height * getAnchorPoint().y));		
-		
+
 		JGRect bounds = new JGRect(pWS, getContentSize());
 		return bounds.contains(p);
 	}
@@ -308,17 +299,16 @@ public class JGNode {
 		JGInputManager im = JGInputManager.sharedInstance();
 		if (this.hitTestWithWorldPos(im.getMousePosition())){
 			
-			mouseEntered = true;
 			
 			//test for mouse entered
-			if (!oldMouseEntered){
+			if (!im.getOldMouseButtonState(1)){
 				onMouseEnter();
 			}
 			
 			//
 			//mouse pressed / released
 			//
-			if (im.getMouseButtonState(1) && !oldMousePressed && !mousePressed){
+			if (im.getMouseButtonState(1) && !im.getOldMouseButtonState(1) && !mousePressed){
 				
 				mousePressed = true;
 				mouseStartPosition = im.getMousePosition();
@@ -339,15 +329,12 @@ public class JGNode {
 			}
 			
 		}else{
-			mouseEntered = false;
 			
 			//test for mouse exited
-			if (oldMouseEntered){
+			if (im.getOldMouseButtonState(1)){
 				onMouseExit();
 			}
 		}
-		//update old mouse entered last
-		oldMouseEntered = mouseEntered;
 		
 		//check for mouse released even if the mouse doesn't lie within the nodes bounds
 		if (mousePressed && !im.getMouseButtonState(1)){

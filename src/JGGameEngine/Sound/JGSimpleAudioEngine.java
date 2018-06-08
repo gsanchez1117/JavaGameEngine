@@ -97,7 +97,7 @@ public class JGSimpleAudioEngine {
 	public void playMusic(String fileName, boolean loops){
 		if (music.containsKey(fileName)){
 			Music m = music.get(fileName);
-			m.play(loops);;
+			m.play(loops);
 		}else{
 			Music m = loadMusic(fileName);
 			m.play(loops);

@@ -12,10 +12,10 @@
 #############################################################################
 
 # Set the game window width to 960
-B_WIDTH 1000
+B_WIDTH 480
 
 # Set the game window height to 544
-B_HEIGHT 500
+B_HEIGHT 640
 
 # Set the fps to 60 
 FPS 60

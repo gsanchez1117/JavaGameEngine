@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -252,6 +253,22 @@ public class JGGraphics {
 		
 		//Set Fill Color
 		gp.g2.setColor(aNode.fillColor);
+		gp.g2.fillRect((int)position.x, (int)position.y, (int)size.width-1, (int)size.height-1);
+	    
+	    endGraphics(gp);
+	}
+	
+	public static void fillNodeGradientRect(JGNode aNode, JGPoint position, JGSize size, Color col1, Color col2, JGPoint start, JGPoint end, Graphics g){
+		
+		float opacity = aNode.getIsOpaque() ? 1.0f : aNode.getOpacity();
+		JGGraphicsPackage gp = startGraphics(g, opacity);
+		
+		gp.g2.transform(aNode.getTransformationMatrix());
+		
+		GradientPaint gPaint = new GradientPaint((float)start.x,(float)start.y,col1,(float)end.x,(float)end.y,col2);
+		
+		//Set Fill Color
+		gp.g2.setPaint(gPaint);
 		gp.g2.fillRect((int)position.x, (int)position.y, (int)size.width-1, (int)size.height-1);
 	    
 	    endGraphics(gp);

@@ -118,7 +118,11 @@ public class JGGame extends JPanel implements ActionListener {
 	 */
 	protected void Update(float dt){
 		
-		        
+		if (rootNode == null){
+	        //set the root node to run
+			replaceRootNode(new JGNode());
+		}
+
 		//only update the root node if:
 		//	1: not null
 		//	2: alive
@@ -126,8 +130,12 @@ public class JGGame extends JPanel implements ActionListener {
 		if (rootNode!= null && rootNode.getIsAlive() && !gamePaused)
 			rootNode.Update(dt);
 		
+		//update old mouse input states
+		JGInputManager.sharedInstance().updateOldMouseButtonState();
+		
 		//release the mouse input block
 		JGInputManager.sharedInstance().setMouseInputBlocked(false);
+
 	}
 	
 	
@@ -199,6 +207,24 @@ public class JGGame extends JPanel implements ActionListener {
 
         //call the draw method using the current graphics context
         Draw(deltaTime, g);
+    }
+    
+    /**
+     * Custom override of the getWidth method. This method will return the current width of the window if it is available or else 
+     * it will return the width retrieved from the config file.
+     */
+    @Override
+    public int getWidth(){
+    	return super.getWidth() > 0 ? super.getWidth() : B_WIDTH;
+    }
+    
+    /**
+     * Custom override of the getWidth method. This method will return the current width of the window if it is available or else 
+     * it will return the width retrieved from the config file.
+     */
+    @Override
+    public int getHeight(){
+    	return super.getHeight() > 0 ? super.getHeight() : B_HEIGHT;
     }
     
     //////////////////////
@@ -301,6 +327,9 @@ public class JGGame extends JPanel implements ActionListener {
 		//allow the panel to receive focus.
         setFocusable(true);
         
+        //set the layout to null so object can be placed anywhere
+        setLayout(null);
+        
         //set the size of the panel.
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         
@@ -311,6 +340,7 @@ public class JGGame extends JPanel implements ActionListener {
 	private void runGameEngine(){
         timer = new Timer(1000 / TICKS_PER_SECOND, this);
         timer.start();
+        repaint();
 	}
 	
 	private void performCompatibilityCheck(){
